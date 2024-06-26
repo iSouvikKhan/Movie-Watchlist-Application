@@ -43,7 +43,7 @@ router.post("/signup", async (req, res) => {
             username: body.username,
             password: body.password,
             firstname: body.firstname,
-            lastbname: body.lastname,
+            lastname: body.lastname,
         });
 
         res.json({
