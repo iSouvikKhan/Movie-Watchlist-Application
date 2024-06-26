@@ -9,7 +9,7 @@ const userSchema = new mongoose.Schema({
         unique: true,
         trim: true,
         lowercase: true,
-        minLength: 3,
+        minLength: 5,
         maxLength: 30
     },
     password: {
@@ -46,7 +46,9 @@ const movieSchema = new mongoose.Schema({
         type: String
     },
     releaseyear: {
-        type: String
+        type: Number,
+        min: 1900,
+        max: 2100
     },
     genre: {
         type: String
@@ -57,9 +59,8 @@ const movieSchema = new mongoose.Schema({
     },
     rating: { 
         type: Number,
-        min: 0,
-        max: 10,
-        default: null
+        min: 1,
+        max: 5
     },
     review: {
         type: String

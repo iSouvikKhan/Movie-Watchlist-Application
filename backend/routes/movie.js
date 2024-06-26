@@ -8,13 +8,13 @@ const { authMiddleware } = require("../middleware/index");
 const router = express.Router();
 
 const movieBody = zod.object({
-    title: zod.string().min(5).max(30),
-    description: zod.string().min(5).max(100),
+    title: zod.string().min(5),
+    description: zod.string().min(5),
     releaseyear: zod.number().min(1900).max(2100),
-    genre: zod.string().min(5).max(15),
+    genre: zod.string().min(5),
     watchstatus: zod.boolean(),
-    rating: zod.number().min(1).max(10),
-    review: zod.string().min(5).max(100)
+    rating: zod.number().min(1).max(5),
+    review: zod.string().min(5)
 });
 
 router.post("/", authMiddleware, async (req, res) => {
@@ -46,6 +46,22 @@ router.get("/", authMiddleware, async (req, res) => {
         res.json(movies);
     } catch (error) {
         console.log("get movies route", error);
+        res.status(500).json({
+            message: "Internal server error"
+        });
+    }
+});
+
+router.get("/:id", authMiddleware, async (req, res) => {
+    try {
+        const movieId = req.params.id;
+        const movie = await Movie.findById(movieId);
+        if (!movie) {
+            return res.status(404).json({ message: "Movie not found" });
+        }
+        res.json(movie);
+    } catch (error) {
+        console.log("get movie by id route error", error);
         res.status(500).json({
             message: "Internal server error"
         });

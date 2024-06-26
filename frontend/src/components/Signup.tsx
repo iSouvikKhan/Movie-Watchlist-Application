@@ -2,12 +2,19 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 
+interface Errors {
+  username?: string;
+  password?: string;
+  firstname?: string;
+  lastname?: string;
+}
+
 const Signup: React.FC = () => {
   const [username, setUsername] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [firstname, setFirstname] = useState<string>('');
   const [lastname, setLastname] = useState<string>('');
-  const [error, setError] = useState<string>('');
+  const [error, setError] = useState<Errors>({});
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -19,6 +26,20 @@ const Signup: React.FC = () => {
 
   const handleSignup = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    const newErrors: Errors = {};
+    if(!username) newErrors.username = 'provide an email';
+    if(!password || password.length < 6) newErrors.password = 'minimum 6 characters';
+    if(!firstname) newErrors.firstname = 'minimum 5 characters';
+    if(!lastname) newErrors.lastname = 'minimum 5 characters';
+    if(Object.keys(newErrors).length > 0){
+      setError(newErrors);
+      return;
+    } else {
+      setError({});
+      console.log('User submitted');
+    }
+
     try {
       const response = await axios.post('http://localhost:3000/api/v1/user/signup', {
         username,
@@ -26,13 +47,20 @@ const Signup: React.FC = () => {
         firstname,
         lastname,
       });
-      if (response.status === 200) {
-        navigate('/');
-      } else {
-        setError('Signup failed');
+      const token = response.data.token;
+      if (token) {
+        localStorage.setItem('token', token);
+        navigate('/home');
       }
-    } catch (error) {
-      setError('Signup failed');
+      else {
+        console.log("Signup token error");
+      }
+    } catch (error: any) {
+      if(error.response.status === 411){
+        newErrors.username = error.response.data.message;
+        setError(newErrors);
+      }
+      console.log("Signup catch error");
     }
   };
 
@@ -47,9 +75,9 @@ const Signup: React.FC = () => {
               type="text"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              required
               className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-indigo-100"
             />
+            {error.username && <p className="text-red-500 text-sm">{error.username}</p>}
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700">Password</label>
@@ -57,9 +85,9 @@ const Signup: React.FC = () => {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              required
               className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-indigo-100"
             />
+            {error.password && <p className="text-red-500 text-sm">{error.password}</p>}
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700">First Name</label>
@@ -67,9 +95,9 @@ const Signup: React.FC = () => {
               type="text"
               value={firstname}
               onChange={(e) => setFirstname(e.target.value)}
-              required
               className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-indigo-100"
             />
+            {error.firstname && <p className="text-red-500 text-sm">{error.firstname}</p>}
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700">Last Name</label>
@@ -77,11 +105,10 @@ const Signup: React.FC = () => {
               type="text"
               value={lastname}
               onChange={(e) => setLastname(e.target.value)}
-              required
               className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-indigo-100"
             />
+            {error.lastname && <p className="text-red-500 text-sm">{error.lastname}</p>}
           </div>
-          {error && <div className="text-red-500">{error}</div>}
           <div>
             <button
               type="submit"

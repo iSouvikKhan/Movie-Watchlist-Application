@@ -16,7 +16,7 @@ const signupBody = zod.object({
 
 const signinBody = zod.object({
     username: zod.string().email(),
-	password: zod.string()
+	password: zod.string().min(6)
 })
 
 router.post("/signup", async (req, res) => {
@@ -46,9 +46,17 @@ router.post("/signup", async (req, res) => {
             lastname: body.lastname,
         });
 
-        res.json({
-            message: "User created successfully"
-        })
+        if (dbuser) {
+            const token = jwt.sign({
+                userId: dbuser._id
+            }, JWT_SECRET);
+    
+            res.json({
+                message: "Sign up successful",
+                token: "Bearer " + token
+            })
+            return;
+        }
     }
     catch(error){
         console.log("signup route", error);
@@ -86,7 +94,7 @@ router.post("/signin", async (req, res) => {
         }
 
         res.status(411).json({
-            message: "Error while signing in"
+            message: "invalid username or password"
         })
     }
     catch(error){

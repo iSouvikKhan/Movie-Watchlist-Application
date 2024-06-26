@@ -2,10 +2,15 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 
+interface Errors {
+  username?: string;
+  password?: string;
+}
+
 const Signin: React.FC = () => {
   const [username, setUsername] = useState<string>('');
   const [password, setPassword] = useState<string>('');
-  const [error, setError] = useState<string>('');
+  const [error, setError] = useState<Errors>({});
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -17,6 +22,18 @@ const Signin: React.FC = () => {
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    const newErrors: Errors = {};
+    if(!username) newErrors.username = 'username is required';
+    if(!password) newErrors.password = 'password is required';
+    if(Object.keys(newErrors).length > 0){
+      setError(newErrors);
+      return;
+    } else {
+      setError({});
+      console.log('Login successful');
+    }
+
     try {
       const response = await axios.post('http://localhost:3000/api/v1/user/signin', {
         username,
@@ -27,8 +44,14 @@ const Signin: React.FC = () => {
         localStorage.setItem('token', token);
         navigate('/home');
       }
-    } catch (error) {
-      setError('Invalid username or password');
+      else{
+        console.log("Signin token error");
+      }
+    } catch (error: any) {
+      if(error.response.status === 411){
+        newErrors.password = error.response.data.message;
+        setError(newErrors);
+      }
     }
   };
 
@@ -43,9 +66,9 @@ const Signin: React.FC = () => {
               type="text"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              required
               className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-indigo-100"
             />
+            {error.username && <p className="text-red-500 text-sm">{error.username}</p>}
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700">Password</label>
@@ -53,11 +76,10 @@ const Signin: React.FC = () => {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              required
               className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-indigo-100"
             />
+            {error.password && <p className="text-red-500 text-sm">{error.password}</p>}
           </div>
-          {error && <div className="text-red-500">{error}</div>}
           <div>
             <button
               type="submit"
