@@ -35,7 +35,7 @@ const Signin: React.FC = () => {
     }
 
     try {
-      const response = await axios.post('http://localhost:3000/api/v1/user/signin', {
+      const response = await axios.post('https://movie-watchlist-application-hf26.onrender.com/api/v1/user/signin', {
         username,
         password,
       });
@@ -63,7 +63,7 @@ const Signin: React.FC = () => {
           <div>
             <label className="block text-sm font-medium text-gray-700">Username</label>
             <input
-              type="text"
+              type="email"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-indigo-100"

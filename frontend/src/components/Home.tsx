@@ -22,7 +22,7 @@ const Home: React.FC = () => {
 
   const fetchMovies = async () => {
     try {
-      const response = await axios.get('http://localhost:3000/api/v1/movie/', { headers });
+      const response = await axios.get('https://movie-watchlist-application-hf26.onrender.com/api/v1/movie/', { headers });
       setMovies(response.data);
     } catch (error) {
       console.error('Error fetching movies:', error);
@@ -35,7 +35,7 @@ const Home: React.FC = () => {
 
   const handleDelete = async (id: string) => {
     try {
-      await axios.delete(`http://localhost:3000/api/v1/movie/${id}`, { headers });
+      await axios.delete(`https://movie-watchlist-application-hf26.onrender.com/api/v1/movie/${id}`, { headers });
       setMovies(movies.filter(movie => movie._id !== id));
     } catch (error) {
       console.error('Error deleting movie:', error);
@@ -45,7 +45,7 @@ const Home: React.FC = () => {
   const handleToggleWatchStatus = async (movie: Movie) => {
     try {
       const updatedMovie = { ...movie, watchstatus: !movie.watchstatus };
-      await axios.put(`http://localhost:3000/api/v1/movie/${movie._id}`, updatedMovie, { headers });
+      await axios.put(`https://movie-watchlist-application-hf26.onrender.com/api/v1/movie/${movie._id}`, updatedMovie, { headers });
       setMovies(movies.map(m => m._id === movie._id ? updatedMovie : m));
     } catch (error) {
       console.error('Error toggling watch status:', error);

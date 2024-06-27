@@ -27,7 +27,7 @@ const Description: React.FC = () => {
     };
 
   useEffect(() => {
-    axios.get(`http://localhost:3000/api/v1/movie/${id}`, { headers })
+    axios.get(`https://movie-watchlist-application-hf26.onrender.com/api/v1/movie/${id}`, { headers })
       .then(response => setMovie(response.data))
       .catch(error => console.error('Error fetching movie:', error));
   }, [id]);

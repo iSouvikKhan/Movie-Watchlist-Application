@@ -43,7 +43,7 @@ const AddEdit: React.FC = () => {
 
   useEffect(() => {
     if (id) {
-      axios.get(`http://localhost:3000/api/v1/movie/${id}`, { headers })
+      axios.get(`https://movie-watchlist-application-hf26.onrender.com/api/v1/movie/${id}`, { headers })
         .then(response => setMovie(response.data))
         .catch(error => console.error('Error fetching movie:', error));
     }
@@ -99,9 +99,9 @@ const AddEdit: React.FC = () => {
     try {
 
         if (id) {
-          await axios.put(`http://localhost:3000/api/v1/movie/${id}`, movie, { headers });
+          await axios.put(`https://movie-watchlist-application-hf26.onrender.com/api/v1/movie/${id}`, movie, { headers });
         } else {
-          await axios.post('http://localhost:3000/api/v1/movie', movie, { headers });
+          await axios.post('https://movie-watchlist-application-hf26.onrender.com/api/v1/movie', movie, { headers });
         }
         navigate('/');
 

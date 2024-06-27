@@ -25,7 +25,7 @@ router.post("/signup", async (req, res) => {
         const {success} = signupBody.safeParse(req.body);
         if(!success){
             return res.status(411).json({
-                message: "Validation error at signup"
+                message: "validation error at signup"
             })
         }
 
@@ -35,7 +35,7 @@ router.post("/signup", async (req, res) => {
 
         if(user?._id){
             return res.status(411).json({
-                message: "Email already exists"
+                message: "email already exists"
             })
         }
 
