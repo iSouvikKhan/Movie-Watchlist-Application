@@ -25,7 +25,7 @@ const Signin: React.FC = () => {
 
     const newErrors: Errors = {};
     if(!username) newErrors.username = 'username is required';
-    if(!password) newErrors.password = 'password is required';
+    if(!password || password.length < 6) newErrors.password = 'minimum 6 characters';
     if(Object.keys(newErrors).length > 0){
       setError(newErrors);
       return;

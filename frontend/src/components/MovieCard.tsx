@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Movie } from '../model/Movietypes';
+import myImage from '../assets/placeholder.jpg';
 
 interface MovieCardProps {
     movie: Movie;
@@ -15,7 +16,7 @@ export const MovieCard: React.FC<MovieCardProps> = ({ movie, onDelete, onToggleW
     <div className="bg-white p-5 border-t-4 rounded shadow-md">
 
 <img
-    src={`../src/assets/placeholder.jpg`}
+    src={myImage}
     alt="Placeholder"
     className="w-full rounded-md mb-5"
   />  
