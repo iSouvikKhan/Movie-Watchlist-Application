@@ -12,3 +12,9 @@
 Deployed link:
 - Frontend - https://lighthearted-torrone-790312.netlify.app/ (Netlify)
 - Backend - https://movie-watchlist-application-hf26.onrender.com/ (Render)
+
+<br>
+Creds:
+
+- username - souvik@gmail.com
+- password - 123456
