@@ -10,5 +10,5 @@
  
   <br>
 Deployed link:
-- Frontend - https://ui-of-movie-watchlist-application.onrender.com/ (Render)
+- Frontend - https://lighthearted-torrone-790312.netlify.app/ (Netlify)
 - Backend - https://movie-watchlist-application-hf26.onrender.com/ (Render)
