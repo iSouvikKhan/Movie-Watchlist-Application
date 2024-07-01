@@ -9,4 +9,6 @@
    - npm run dev
  
   <br>
-Deployed link: https://ui-of-movie-watchlist-application.onrender.com/
+Deployed link:
+- Frontend - https://ui-of-movie-watchlist-application.onrender.com/ (Render)
+- Backend - https://movie-watchlist-application-hf26.onrender.com/ (Render)
